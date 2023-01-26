@@ -23,24 +23,24 @@ void Server::start() {
 	std::cout << "Accepted client connection!" << std::endl;
 
     // Send a message to the client
-    std::string message = "Hello, client!\n";    
+    std::string message = "Hello, client!\n";
 	send(m_Client_fd, message.c_str(), message.length(), 0);
     std::cout << "Sent message: " << message << std::endl;
 
     char buffer[1024];
-    while(true) {        
+    while(true) {
 		// Receive a message from the client
-        recv(m_Client_fd, buffer, 1024, 0);        
+        recv(m_Client_fd, buffer, 1024, 0);
 		{
-            std::string bufferString;            
+            std::string bufferString;      
 			for(int i = 0; buffer[i] != '\n' && i < 1024; i++) {
-                bufferString+=buffer[i];            
+                bufferString+=buffer[i];
 			}
-            std::cout << "Client said: " << bufferString << std::endl;        
+            std::cout << "Client said: " << bufferString << std::endl;
 		}
     }
 
-    // Close the socket    
+    // Close the socket
 	close(m_Client_fd);
     close(m_Server_fd);
 }
