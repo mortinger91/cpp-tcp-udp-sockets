@@ -1,6 +1,7 @@
 add_executable (
 	${PROJECT_NAME} 
 	main.cpp
+	server.cpp
 )
 
 target_compile_definitions(
