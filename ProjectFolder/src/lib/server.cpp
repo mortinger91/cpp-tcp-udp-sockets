@@ -1,4 +1,5 @@
 #include "server.h"
+#include "utility.h"
 
 #include <iostream>
 #include <string>
@@ -32,11 +33,16 @@ void Server::start() {
 		// Receive a message from the client
         recv(m_Client_fd, buffer, 1024, 0);
 		{
-            std::string bufferString;      
+            // string containing the packet's raw bytes
+            std::string bufferString;
 			for(int i = 0; buffer[i] != '\n' && i < 1024; i++) {
                 bufferString+=buffer[i];
 			}
-            std::cout << "Client said: " << bufferString << std::endl;
+            // transform the raw bytes into hex
+            std::string hexString;
+            hexString = Utility::raw_bytes_to_hex(buffer, 1024);
+
+            std::cout << "Client said: " << hexString << std::endl;
 		}
     }
 
