@@ -1,7 +1,7 @@
 add_library(
 	${LIB_TARGET}
 	utility.cpp
-	utility.h
+	server.cpp
 )
 
 target_compile_definitions(

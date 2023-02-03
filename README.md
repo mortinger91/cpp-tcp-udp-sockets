@@ -2,18 +2,26 @@
 
 <h1>cpp-server</h1>
 Easy CMAKE C++ project that uses sockets. Supports Linux and macOS.
-<h2>Build:</h2>
+<h2>Set up project:</h2>
 Execute script:
 
 ```./ProjectFolder/scripts/cmake_build.sh```<br>
 or execute task "build_cmake" in VSCode.
-<h2>Debug:</h2>
+<h2>Build and Run:</h2>
 Execute script:
 
 ```./ProjectFolder/scripts/make_debug.sh```<br>
+then run:<br>
+```./ProjectFolder/build/debug/bin/cpp-server```<br>
 or select and run a configuration in VSCode:<br>
 - Debug<br>
 - Release
-<h2>Adding a new file:</h2>
+<h2>Run tests:</h2>
+Execute script:
+
+```./ProjectFolder/scripts/run_tests.sh```<br>
+or execute task "run_tests" in VSCode.
+<h2>Add a new file:</h2>
 - Create the new file in desired folder<br>
-- Add the .cpp reference in the folder's CMakeLists.txt file
+- Add the .cpp reference in the folder's CMakeLists.txt file.<br>
+- If adding a new test, also add add_test() in the tests/ CMakeLists.txt file

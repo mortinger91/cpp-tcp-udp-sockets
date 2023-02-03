@@ -1,7 +1,7 @@
 // main.cpp: This file contains the 'main' function. Program execution begins and ends there.
 
-#include "src/lib/utility.h"
-#include "server.h"
+#include "../lib/utility.h"
+#include "../lib/server.h"
 
 int main()
 {
