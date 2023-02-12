@@ -29,9 +29,15 @@ void Server::start() {
     std::cout << "Sent message: " << message << std::endl;
 
     char buffer[1024];
+    ssize_t received = 0;
     while(true) {
 		// Receive a message from the client
-        recv(m_Client_fd, buffer, 1024, 0);
+        received = recv(m_Client_fd, buffer, 1024, 0);
+        if (received == 0)
+        {
+            std::cout << "Client disconnected!" << std::endl;
+            break;
+        }
 		{
             // string containing the packet's raw bytes
             std::string bufferString;
