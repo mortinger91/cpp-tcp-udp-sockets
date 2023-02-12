@@ -33,12 +33,13 @@ void Server::start() {
     while(true) {
 		// Receive a message from the client
         received = recv(m_Client_fd, buffer, 1024, 0);
-        if (received == 0)
-        {
+        if(received == 0) {
             std::cout << "Client disconnected!" << std::endl;
             break;
-        }
-		{
+        } else if(received < 0) {
+            std::cout << "Error receiving message!" << std::endl;
+            break;
+        } else {
             // string containing the packet's raw bytes
             std::string bufferString;
 			for(int i = 0; buffer[i] != '\n' && i < 1024; i++) {
