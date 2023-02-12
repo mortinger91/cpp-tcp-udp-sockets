@@ -18,6 +18,7 @@ namespace Utility
 		for (size_t i = 0; data[i] != '\n' && i < size; ++i) 
 		{
 			ss << std::setw(2) << static_cast<int>(data[i]);
+			ss << " ";
 		}
 		return ss.str();
 	}

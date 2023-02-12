@@ -39,10 +39,9 @@ void Server::start() {
                 bufferString+=buffer[i];
 			}
             // transform the raw bytes into hex
-            std::string hexString;
-            hexString = Utility::raw_bytes_to_hex(buffer, 1024);
+            std::string hexString = Utility::raw_bytes_to_hex(buffer, 1024);
 
-            std::cout << "Client said: " << hexString << std::endl;
+            std::cout << "Client said (in hex): " << hexString << std::endl;
 		}
     }
 
