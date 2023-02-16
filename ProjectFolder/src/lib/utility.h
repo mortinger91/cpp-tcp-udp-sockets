@@ -4,7 +4,7 @@
 
 namespace Utility
 {
-	std::string HelloWorld();
+	std::string rawBytesToHexString(char* data, size_t size);
 
-	std::string raw_bytes_to_hex(char* data, size_t size);
+	std::vector<char> rawBytesToHexVector(char* data, size_t size);
 }
