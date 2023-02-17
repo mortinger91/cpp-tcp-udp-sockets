@@ -39,4 +39,5 @@ jobs:
         buildWithCMakeArgs: '-- -v'
         buildDirectory: '${{ github.workspace }}/ProjectFolder/build/'
     - name: run tests
-      run: ctest --test-dir ${{ github.workspace }}/ProjectFolder/build
+      working-directory: ${{ github.workspace }}
+      run: ./ProjectFolder/scripts/run_tests.sh
