@@ -22,6 +22,6 @@ Execute script:
 ```./ProjectFolder/scripts/run_tests.sh```<br>
 or execute task "run_tests" in VSCode.
 <h2>Add a new file:</h2>
-- Create the new file in desired folder<br>
-- Add the .cpp reference in the folder's CMakeLists.txt file.<br>
-- If adding a new test, also add add_test() in the tests/ CMakeLists.txt file
+- Create the new file in the desired folder.<br>
+- Add file.cpp in the CMakeLists.txt file (the one in the same folder as the file).<br>
+- If adding a new test file, also add add_test() in the tests/CMakeLists.txt file.
