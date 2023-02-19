@@ -1,7 +1,7 @@
 [![cpp-server](https://github.com/mortinger91/cpp-server/actions/workflows/cmake.yml/badge.svg?branch=master)](https://github.com/mortinger91/cpp-server/actions/workflows/cmake.yml)
 
 <h1>cpp-server</h1>
-Easy CMAKE C++ project that uses sockets. Supports Linux and macOS.
+Easy CMake C++ project that uses sockets. Supports Linux and macOS.
 <h2>Set up project:</h2>
 Execute script:
 
