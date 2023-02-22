@@ -1,7 +1,13 @@
 [![cpp-server](https://github.com/mortinger91/cpp-server/actions/workflows/cmake.yml/badge.svg?branch=master)](https://github.com/mortinger91/cpp-server/actions/workflows/cmake.yml)
 
 <h1>cpp-server</h1>
-Easy CMake C++ project that uses sockets. Supports Linux and macOS.
+Easy CMake C++ project that uses sockets. Supports Linux and macOS.<br>
+Listen on a port (set it in the main) for a TCP connection,<br>
+then prints everything it receives through the connection as hex in the stdout.<br>
+<h3>My use case:</h3>
+Doing networking research and using it as a code alternative to 
+
+```Netcat``` in which I can change things, add new code, set breakpoints, etc.   
 <h2>Set up project:</h2>
 Execute script:
 
