@@ -1,6 +1,6 @@
 #include "test.h"
 
-#include "../src/lib/utility.h"
+#include "utility/utility.h"
 #include <vector>
 #include <iostream>
 #include <string>

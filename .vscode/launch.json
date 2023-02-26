@@ -5,7 +5,7 @@
 			"name": "DEBUG",
 			"type": "lldb",
 			"request": "launch",
-			"program": "${workspaceFolder}/ProjectFolder/build/debug/bin/cpp-server",
+			"program": "${workspaceFolder}/build/debug/bin/cpp-server",
 			"preLaunchTask": "build_debug",
 			"cwd": "${workspaceFolder}",
 		},
