@@ -1,6 +1,6 @@
-[![cpp-server](https://github.com/mortinger91/cpp-server/actions/workflows/cmake.yml/badge.svg?branch=master)](https://github.com/mortinger91/cpp-server/actions/workflows/cmake.yml)
+[![cpp-tcp-udp-server](https://github.com/mortinger91/cpp-tcp-udp-server/actions/workflows/cmake.yml/badge.svg?branch=master)](https://github.com/mortinger91/cpp-tcp-udp-server/actions/workflows/cmake.yml)
 
-<h1>cpp-server</h1>
+<h1>cpp-tcp-udp-server</h1>
 Easy CMake C++ project that uses sockets. Supports Linux and macOS.<br>
 Listen on a port (set it in the main) for a TCP connection,<br>
 then prints everything it receives through the connection as hex in the stdout.<br>
