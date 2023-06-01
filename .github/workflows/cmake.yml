@@ -1,4 +1,4 @@
-name: cpp-tcp-udpserver
+name: cpp-tcp-udp-server
 on:
   push:
 concurrency:
