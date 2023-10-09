@@ -3,6 +3,7 @@
 #include "server/server.h"
 #include "client/client.h"
 #include "utility/definitions.h"
+#include <cstring>
 
 int main(int argc, char* argv[])
 {
