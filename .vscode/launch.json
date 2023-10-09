@@ -19,26 +19,5 @@
 			"preLaunchTask": "build_debug",
 			"cwd": "${workspaceFolder}",
 		},
-		{
-			"name": "Release Server",
-			"type": "cppdbg",
-			"request": "launch",
-			"program": "${workspaceFolder}/build/release/bin/cpp-tcp-udp-server",
-			"args": ["server"],
-			"stopAtEntry": false,
-			"cwd": "${workspaceFolder}",
-			"environment": [],
-			"externalConsole": false,
-			"MIMode": "gdb",
-			"setupCommands": [
-				{
-					"description": "Enable pretty-printing for gdb",
-					"text": "-enable-pretty-printing",
-					"ignoreFailures": true
-				}
-			],
-			"preLaunchTask": "build_release",
-			"miDebuggerPath": "/usr/bin/gdb"
-		}
 	]
 }
