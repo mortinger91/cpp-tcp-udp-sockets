@@ -13,6 +13,6 @@ private:
 	int m_Server_fd;
 	int m_Client_fd;
 
-	void createSocket(Protocol protocol, int port);
+	void createSocket(int port, Protocol protocol);
 	void createTCPSocket(int port);
 };

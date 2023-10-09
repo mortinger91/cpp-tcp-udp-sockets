@@ -13,7 +13,7 @@ Server::Server(int _port, Protocol _protocol):
 void Server::start() {
 	std::cout << "Server started!" << std::endl;
 
-    createSocket(m_Protocol, m_Port);
+    createSocket(m_Port, m_Protocol);
 	
     // Listen for incoming connections
 	std::cout << "Listening for a new connection request!" << std::endl;
@@ -57,7 +57,7 @@ void Server::start() {
     close(m_Server_fd);
 }
 
-void Server::createSocket(Protocol protocol, int port) {
+void Server::createSocket(int port, Protocol protocol) {
 	switch(protocol) {
 		case Protocol::TCP:
 			createTCPSocket(port);
