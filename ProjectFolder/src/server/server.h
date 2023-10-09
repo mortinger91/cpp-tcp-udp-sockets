@@ -1,6 +1,6 @@
 #pragma once
 
-enum Protocol {UDP, TCP, UNIX};
+#include "utility/definitions.h"
 
 class Server {
 public:
