@@ -1,11 +1,30 @@
 // main.cpp: This file contains the 'main' function. Program execution begins and ends there.
 
 #include "server/server.h"
+#include "client/client.h"
+#include "utility/definitions.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-	Server s(9000, Protocol::TCP);
-	s.start();
+    if (argc >= 2)
+    {
+        if (strcmp(argv[1], "server") == 0) 
+        {
+            Server s(9000, Protocol::TCP);
+            s.start();
+        }
+        else if (strcmp(argv[1], "client") == 0) 
+        {
+            Client c("127.0.0.1", 9000, Protocol::TCP);
+            c.start();
+        }
+        else
+        {
+            return 2;
+        }
+    } else {
+        return 1;
+    }
 
 	return 0;
 }
