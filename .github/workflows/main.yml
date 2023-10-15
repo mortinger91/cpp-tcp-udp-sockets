@@ -1,0 +1,16 @@
+name: Build and test all platforms
+on:
+  push:
+  workflow_dispatch:
+    
+jobs:
+  linux:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/linux.yml
+
+  macos:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/macos.yml
+

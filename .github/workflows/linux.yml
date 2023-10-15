@@ -1,0 +1,35 @@
+name: Build and test on Linux
+on:
+  workflow_call:
+
+concurrency:
+  group: "${{ github.ref }}-linux"
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    runs-on: ubuntu-20.04
+    # Specify an image from hub.docker.com
+    # container:
+      # image: debian:10-slim
+      # options:
+    timeout-minutes: 60
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup sccache
+      uses: hendrikmuhs/ccache-action@main
+      with:
+        key: ${{ github.job }}
+        max-size: 1000M
+        variant: sccache
+    - name: configure CMake and build
+      run: ./ProjectFolder/scripts/create_release.sh withTests
+    - name: run tests
+      run: ./ProjectFolder/scripts/run_tests.sh Release
+    - uses: actions/upload-artifact@v3
+      if: success()
+      with:
+        name: "linux-artifacts"
+        retention-days: 28
+        path: |-
+          build/Release/bin/cpp-tcp-udp-server
