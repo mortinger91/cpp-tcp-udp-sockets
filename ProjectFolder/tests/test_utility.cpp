@@ -1,9 +1,8 @@
 #include "test.h"
-
 #include "utility/utility.h"
-#include <vector>
 #include <iostream>
 #include <string>
+#include <vector>
 
 void testRawBytesToHexVector()
 {
