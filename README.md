@@ -1,11 +1,13 @@
 [![main](https://github.com/mortinger91/cpp-tcp-udp-sockets/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/mortinger91/cpp-tcp-udp-sockets/actions/workflows/main.yml)
 
-<h1>cpp-tcp-udp-sockets</h1>
-Easy CMake C++ project that uses sockets. Supports Linux and macOS.  
-Run as server:  
-Listen on a port for incoming TCP connections.    
+# cpp-tcp-udp-sockets
+
+### Easy CMake C++ project that uses sockets. Supports Linux and macOS.   
+
+- Run as server:  
+Listen on a port for incoming TCP connections.  
 Prints everything it receives through the connection as hex in the stdout.  
-Run as client:  
+- Run as client:  
 Connect to an endpoint and port.
 
 Requirements:
