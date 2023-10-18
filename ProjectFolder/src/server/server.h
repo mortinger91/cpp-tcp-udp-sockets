@@ -11,8 +11,8 @@ class Server
    private:
     Protocol m_Protocol;
     int m_Port;
+    int m_Listen_fd;
     int m_Server_fd;
-    int m_Client_fd;
 
     void createSocket(int port, Protocol protocol);
     void createTCPSocket(int port);

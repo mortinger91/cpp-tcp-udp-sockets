@@ -20,18 +20,27 @@ void Server::start()
 
     // Listen for incoming connections.
     // This is called a passive socket because it is
-    // calling listen() and waiting for an active socket
-    // to call connect() and establish the connection
+    // calling listen() and waiting for an active peer socket
+    // to call connect() and establish a new connection
     std::cout << "Listening for a new connection request!" << std::endl;
-    listen(m_Server_fd, 5);
+    listen(m_Listen_fd, 5);
 
-    // Accept an incoming connection
-    m_Client_fd = accept(m_Server_fd, NULL, NULL);
+    // Accept an incoming connection.
+    // accept() creates a new socket and it is this new socket
+    // that will be connected to the peer active socket
+    // (the client) that performed the connect().
+    // This call will block until a peer socket calls connect().
+    //
+    // Side note: If a client calls connect() in between 
+    // listen() and accept() the OS will mark it as a pending
+    // connection and the client connect() will block until
+    // the server calls accept()  
+    m_Server_fd = accept(m_Listen_fd, NULL, NULL);
     std::cout << "Accepted client connection!" << std::endl;
 
     // Send a message to the client
     std::string message = "Hello, client!\n";
-    send(m_Client_fd, message.c_str(), message.length(), 0);
+    send(m_Server_fd, message.c_str(), message.length(), 0);
     std::cout << "Sent message: " << message << std::endl;
 
     char buffer[1024];
@@ -39,7 +48,7 @@ void Server::start()
     while(true)
     {
         // Receive a message from the client
-        received = recv(m_Client_fd, buffer, 1024, 0);
+        received = recv(m_Server_fd, buffer, 1024, 0);
         if(received == 0)
         {
             std::cout << "Client disconnected!" << std::endl;
@@ -65,8 +74,8 @@ void Server::start()
         }
     }
 
-    // Close the socket
-    close(m_Client_fd);
+    // Close the sockets
+    close(m_Listen_fd);
     close(m_Server_fd);
 }
 
@@ -87,7 +96,7 @@ void Server::createSocket(int port, Protocol protocol)
 void Server::createTCPSocket(int port)
 {
     // Create a socket
-    m_Server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    m_Listen_fd = socket(AF_INET, SOCK_STREAM, 0);
 
     struct sockaddr_in address
     {
@@ -98,5 +107,5 @@ void Server::createTCPSocket(int port)
     address.sin_port = htons(port);  // Listen on the specified port
     // To receive new incoming packets or connections,
     // the socket must be bound to a local interface address and port
-    bind(m_Server_fd, (struct sockaddr *)&address, sizeof(address));
+    bind(m_Listen_fd, (struct sockaddr *)&address, sizeof(address));
 }
