@@ -17,9 +17,9 @@ namespace test
         assert(x.size() == y.size() &&
                "assertVectorContentIsEqual failed: the vectors does not have "
                "the same size!");
-        for(size_t i = 0; i < x.size(); i++)
+        for (size_t i = 0; i < x.size(); i++)
         {
-            if(x[i] != y[i])
+            if (x[i] != y[i])
             {
                 std::string errorString =
                     "vectors' elements at index: " + std::to_string(i) +
@@ -36,7 +36,7 @@ namespace test
 
 #define ASSERT_THROW(condition)                                  \
     {                                                            \
-        if(!(condition))                                         \
+        if (!(condition))                                        \
         {                                                        \
             throw std::runtime_error(                            \
                 std::string(__FILE__) + std::string(":") +       \
@@ -47,7 +47,7 @@ namespace test
 
 #define ASSERT_EQUAL(x, y)                                             \
     {                                                                  \
-        if((x) != (y))                                                 \
+        if ((x) != (y))                                                \
         {                                                              \
             throw std::runtime_error(                                  \
                 std::string(__FILE__) + std::string(":") +             \

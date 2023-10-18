@@ -18,7 +18,7 @@ bool Client::start()
 {
     std::cout << "Client started!" << std::endl;
 
-    if(!createSocketAndConnect(m_Address, m_Port, m_Protocol))
+    if (!createSocketAndConnect(m_Address, m_Port, m_Protocol))
     {
         return false;
     }
@@ -30,16 +30,16 @@ bool Client::start()
 
     char buffer[1024];
     ssize_t received = 0;
-    while(true)
+    while (true)
     {
         // Receive a message from the client
         received = recv(m_Client_fd, buffer, 1024, 0);
-        if(received == 0)
+        if (received == 0)
         {
             std::cout << "Client disconnected!" << std::endl;
             break;
         }
-        else if(received < 0)
+        else if (received < 0)
         {
             std::cout << "Error receiving message!" << std::endl;
             break;
@@ -48,7 +48,7 @@ bool Client::start()
         {
             // string containing the packet's raw bytes
             std::string bufferString;
-            for(int i = 0; buffer[i] != '\n' && i < 1024; i++)
+            for (int i = 0; buffer[i] != '\n' && i < 1024; i++)
             {
                 bufferString += buffer[i];
             }
@@ -68,7 +68,7 @@ bool Client::createSocketAndConnect(std::string address, int port,
                                     Protocol protocol)
 {
     bool result = false;
-    switch(protocol)
+    switch (protocol)
     {
         case Protocol::TCP:
             result = createTCPSocketAndConnect(address, port);
@@ -95,7 +95,7 @@ bool Client::createTCPSocketAndConnect(std::string address, int port)
     // Convert the server address from string to binary form
     auto result =
         inet_pton(AF_INET, address.c_str(), &(socket_address.sin_addr));
-    if(result <= 0)
+    if (result <= 0)
     {
         std::cerr << "Invalid server address!" << std::endl;
         close(m_Client_fd);
@@ -105,8 +105,8 @@ bool Client::createTCPSocketAndConnect(std::string address, int port)
     // This is called an active socket since it is
     // performing the connect() to a passive socket.
     // A passive socket in one calling listen()
-    if(connect(m_Client_fd, (struct sockaddr*)&socket_address,
-               sizeof(socket_address)) < 0)
+    if (connect(m_Client_fd, (struct sockaddr*)&socket_address,
+                sizeof(socket_address)) < 0)
     {
         std::cerr << "Failed to connect to the server!" << std::endl;
         close(m_Client_fd);

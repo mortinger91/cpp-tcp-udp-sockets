@@ -5,17 +5,17 @@
 
 int main(int argc, char* argv[])
 {
-    if(argc >= 2)
+    if (argc >= 2)
     {
-        if(strcmp(argv[1], "server") == 0)
+        if (strcmp(argv[1], "server") == 0)
         {
             Server s(9000, Protocol::TCP);
             s.start();
         }
-        else if(strcmp(argv[1], "client") == 0)
+        else if (strcmp(argv[1], "client") == 0)
         {
             Client c("127.0.0.1", 9000, Protocol::TCP);
-            if(!c.start())
+            if (!c.start())
             {
                 return 3;
             }

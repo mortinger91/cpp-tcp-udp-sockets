@@ -54,16 +54,16 @@ void Server::start()
 
     char buffer[1024];
     ssize_t received = 0;
-    while(true)
+    while (true)
     {
         // Receive a message from the client
         received = recv(m_Server_fd, buffer, 1024, 0);
-        if(received == 0)
+        if (received == 0)
         {
             std::cout << "Client disconnected!" << std::endl;
             break;
         }
-        else if(received < 0)
+        else if (received < 0)
         {
             std::cout << "Error receiving message!" << std::endl;
             break;
@@ -72,7 +72,7 @@ void Server::start()
         {
             // string containing the packet's raw bytes
             std::string bufferString;
-            for(int i = 0; buffer[i] != '\n' && i < 1024; i++)
+            for (int i = 0; buffer[i] != '\n' && i < 1024; i++)
             {
                 bufferString += buffer[i];
             }
@@ -90,7 +90,7 @@ void Server::start()
 
 void Server::createSocket(int port, Protocol protocol)
 {
-    switch(protocol)
+    switch (protocol)
     {
         case Protocol::TCP:
             createTCPSocket(port);
