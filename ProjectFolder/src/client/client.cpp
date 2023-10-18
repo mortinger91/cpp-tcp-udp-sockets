@@ -104,7 +104,7 @@ bool Client::createTCPSocketAndConnect(std::string address, int port)
 
     // This is called an active socket since it is
     // performing the connect() to a passive socket.
-    // A passive socket in one calling listen() 
+    // A passive socket in one calling listen()
     if(connect(m_Client_fd, (struct sockaddr*)&socket_address,
                sizeof(socket_address)) < 0)
     {

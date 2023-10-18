@@ -19,7 +19,7 @@ void Server::start()
     createSocket(m_Port, m_Protocol);
 
     // Listen for incoming connections.
-    // This is called a passive socket because it is 
+    // This is called a passive socket because it is
     // calling listen() and waiting for an active socket
     // to call connect() and establish the connection
     std::cout << "Listening for a new connection request!" << std::endl;
