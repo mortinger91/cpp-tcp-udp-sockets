@@ -1,6 +1,3 @@
-// main.cpp: This file contains the 'main' function.
-// Program execution begins and ends there.
-
 #include "client/client.h"
 #include "server/server.h"
 #include "socket/socket.h"
