@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
         if(strcmp(argv[1], "server") == 0)
         {
             Server s(9000, Protocol::TCP);
-            !s.start();
+            s.start();
         }
         else if(strcmp(argv[1], "client") == 0)
         {
