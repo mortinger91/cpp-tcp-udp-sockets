@@ -7,7 +7,7 @@ class Client
 {
    public:
     Client(std::string _address, int _port, Protocol _protocol);
-    void start();
+    bool start();
 
    private:
     Protocol m_Protocol;
@@ -15,7 +15,7 @@ class Client
     int m_Port;
     int m_Client_fd;
 
-    void createSocketAndConnect(std::string address, int port,
+    bool createSocketAndConnect(std::string address, int port,
                                 Protocol protocol);
-    void createTCPSocketAndConnect(std::string address, int port);
+    bool createTCPSocketAndConnect(std::string address, int port);
 };

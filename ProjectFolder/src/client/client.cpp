@@ -14,11 +14,14 @@ Client::Client(std::string _address, int _port, Protocol _protocol)
 {
 }
 
-void Client::start()
+bool Client::start()
 {
     std::cout << "Client started!" << std::endl;
 
-    createSocketAndConnect(m_Address, m_Port, m_Protocol);
+    if (!createSocketAndConnect(m_Address, m_Port, m_Protocol));
+    {
+        return false;
+    }
 
     // Send a message to the server
     std::string message = "Hello, server!\n";
@@ -58,24 +61,27 @@ void Client::start()
 
     // Close the socket
     close(m_Client_fd);
+    return true;
 }
 
-void Client::createSocketAndConnect(std::string address, int port,
+bool Client::createSocketAndConnect(std::string address, int port,
                                     Protocol protocol)
 {
+    bool result = false;
     switch(protocol)
     {
         case Protocol::TCP:
-            createTCPSocketAndConnect(address, port);
+            result = createTCPSocketAndConnect(address, port);
             break;
         case Protocol::UDP:
             break;
         case Protocol::UNIX:
             break;
     }
+    return result;
 }
 
-void Client::createTCPSocketAndConnect(std::string address, int port)
+bool Client::createTCPSocketAndConnect(std::string address, int port)
 {
     // Create a socket
     m_Client_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -93,7 +99,7 @@ void Client::createTCPSocketAndConnect(std::string address, int port)
     {
         std::cerr << "Invalid server address!" << std::endl;
         close(m_Client_fd);
-        return;
+        return false;
     }
 
     // Connect to the server
@@ -102,6 +108,7 @@ void Client::createTCPSocketAndConnect(std::string address, int port)
     {
         std::cerr << "Failed to connect to the server!" << std::endl;
         close(m_Client_fd);
-        return;
+        return false;
     }
+    return true;
 }

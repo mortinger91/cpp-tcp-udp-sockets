@@ -13,12 +13,15 @@ int main(int argc, char* argv[])
         if(strcmp(argv[1], "server") == 0)
         {
             Server s(9000, Protocol::TCP);
-            s.start();
+            !s.start();
         }
         else if(strcmp(argv[1], "client") == 0)
         {
             Client c("127.0.0.1", 9000, Protocol::TCP);
-            c.start();
+            if (!c.start())
+            {
+                return 3;
+            }
         }
         else
         {
