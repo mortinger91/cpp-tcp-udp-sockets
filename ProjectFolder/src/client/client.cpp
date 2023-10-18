@@ -83,7 +83,7 @@ bool Client::createSocketAndConnect(std::string address, int port,
 
 bool Client::createTCPSocketAndConnect(std::string address, int port)
 {
-    // Create a socket
+    // Creating the socket file descriptor
     m_Client_fd = socket(AF_INET, SOCK_STREAM, 0);
 
     struct sockaddr_in socket_address
@@ -102,7 +102,9 @@ bool Client::createTCPSocketAndConnect(std::string address, int port)
         return false;
     }
 
-    // Connect to the server
+    // This is called an active socket since it is
+    // performing the connect() to a passive socket.
+    // A passive socket in one calling listen() 
     if(connect(m_Client_fd, (struct sockaddr*)&socket_address,
                sizeof(socket_address)) < 0)
     {
