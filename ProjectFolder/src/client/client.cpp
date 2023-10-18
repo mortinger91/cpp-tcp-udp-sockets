@@ -18,7 +18,7 @@ bool Client::start()
 {
     std::cout << "Client started!" << std::endl;
 
-    if (!createSocketAndConnect(m_Address, m_Port, m_Protocol));
+    if(!createSocketAndConnect(m_Address, m_Port, m_Protocol))
     {
         return false;
     }

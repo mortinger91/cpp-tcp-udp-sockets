@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
         else if(strcmp(argv[1], "client") == 0)
         {
             Client c("127.0.0.1", 9000, Protocol::TCP);
-            if (!c.start())
+            if(!c.start())
             {
                 return 3;
             }
