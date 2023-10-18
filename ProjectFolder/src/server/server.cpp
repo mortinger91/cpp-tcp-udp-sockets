@@ -1,6 +1,7 @@
 #include "server.h"
 
 #include "utility/utility.h"
+#include <arpa/inet.h>
 #include <iostream>
 #include <netinet/in.h>
 #include <string>
@@ -31,12 +32,20 @@ void Server::start()
     // (the client) that performed the connect().
     // This call will block until a peer socket calls connect().
     //
-    // Side note: If a client calls connect() in between 
+    // Side note: If a client calls connect() in between
     // listen() and accept() the OS will mark it as a pending
     // connection and the client connect() will block until
-    // the server calls accept()  
-    m_Server_fd = accept(m_Listen_fd, NULL, NULL);
-    std::cout << "Accepted client connection!" << std::endl;
+    // the server calls accept()
+    struct sockaddr_in address
+    {
+    };
+    socklen_t address_size = sizeof(address);
+    m_Server_fd =
+        accept(m_Listen_fd, (struct sockaddr*)&address, &address_size);
+    char client_ip[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(address.sin_addr), client_ip, INET_ADDRSTRLEN);
+    std::cout << "Accepted client connection from IP address: " << client_ip
+              << std::endl;
 
     // Send a message to the client
     std::string message = "Hello, client!\n";
@@ -107,5 +116,5 @@ void Server::createTCPSocket(int port)
     address.sin_port = htons(port);  // Listen on the specified port
     // To receive new incoming packets or connections,
     // the socket must be bound to a local interface address and port
-    bind(m_Listen_fd, (struct sockaddr *)&address, sizeof(address));
+    bind(m_Listen_fd, (struct sockaddr*)&address, sizeof(address));
 }
