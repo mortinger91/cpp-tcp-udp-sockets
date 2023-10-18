@@ -18,10 +18,10 @@ else()
 endif(CCACHE)
 
 # Project
-set(PROJECT_DESCRIPTION "Cpp server")
-set(ONLINE_REPOSITORY "https://github.com/mortinger91/cpp-tcp-udp-server")
+set(PROJECT_DESCRIPTION "Cpp tcp socket server and client")
+set(ONLINE_REPOSITORY "https://github.com/mortinger91/cpp-tcp-udp-sockets")
 project(
-    "cpp-tcp-udp-server"
+    "cpp-tcp-udp-sockets"
         DESCRIPTION ${PROJECT_DESCRIPTION}
         HOMEPAGE_URL ${ONLINE_REPOSITORY}
 )
