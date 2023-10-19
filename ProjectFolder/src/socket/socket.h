@@ -39,9 +39,11 @@ namespace Socket
 
     // The socket that calls connect() is called an active socket (the client),
     // since it is actively performing the connect() to the peer socket.
-    // The peer socket is called passive (the server), 
+    // The peer socket is called passive (the server),
     // since it calls listen() and wait for the peer socket to call connect()
-    bool callConnect(const int fileDescriptor, const std::string& endpointAddress, const int endpointPort);
+    bool callConnect(const int fileDescriptor,
+                     const std::string& endpointAddress,
+                     const int endpointPort);
 
     bool sendMessage(const int fileDescriptor, const std::string& message);
 

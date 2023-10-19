@@ -9,7 +9,8 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-Client::Client(const Protocol _protocol, const std::string& _address, const int _port)
+Client::Client(const Protocol _protocol, const std::string& _address,
+               const int _port)
     : m_Protocol(_protocol), m_Address(_address), m_Port(_port)
 {
 }
@@ -20,9 +21,8 @@ bool Client::start()
 
     if (!Socket::create(m_Protocol, m_Active_fd)) return false;
 
-    if (!Socket::callConnect(m_Active_fd, m_Address, m_Port))
-        return false;
-    
+    if (!Socket::callConnect(m_Active_fd, m_Address, m_Port)) return false;
+
     std::string initialMessage = "Hello, server!\n";
     if (!Socket::sendMessage(m_Active_fd, initialMessage)) return false;
     std::cout << "Sent message: " << initialMessage;
@@ -34,7 +34,7 @@ bool Client::start()
         // std::string input;
         // std::getline(std::cin, input);
         // if (input == "exit") break;
-        
+
         if (!Socket::readMessage(m_Active_fd, receivedMessage))
         {
             returnValue = false;
@@ -42,7 +42,8 @@ bool Client::start()
         }
         std::cout << "Received message: " << receivedMessage;
         std::cout << "Message in hex: "
-                  << Utility::rawBytesToHexString(receivedMessage) << std::endl << std::endl;
+                  << Utility::rawBytesToHexString(receivedMessage) << std::endl
+                  << std::endl;
     }
 
     Socket::callClose(m_Active_fd);

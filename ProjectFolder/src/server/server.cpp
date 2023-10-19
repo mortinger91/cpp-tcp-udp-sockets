@@ -28,21 +28,23 @@ bool Server::start()
     if (!Socket::sendMessage(m_Connection_fd, initialMessage)) return false;
     std::cout << "Sent message: " << initialMessage;
 
-    std::string receivedMessage;
-    std::string input;
     bool returnValue = true;
+    std::string receivedMessage;
     while (true)
     {
-        std::getline(std::cin, input);
-        if (input == "exit") break;
+        // std::string input;
+        // std::getline(std::cin, input);
+        // if (input == "exit") break;
+
         if (!Socket::readMessage(m_Connection_fd, receivedMessage))
         {
             returnValue = false;
             break;
         }
-        std::cout << "Received message: " << receivedMessage << std::endl;
+        std::cout << "Received message: " << receivedMessage;
         std::cout << "Message in hex: "
-                  << Utility::rawBytesToHexString(receivedMessage) << std::endl;
+                  << Utility::rawBytesToHexString(receivedMessage) << std::endl
+                  << std::endl;
     }
 
     Socket::callClose(m_Passive_fd);

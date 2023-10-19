@@ -57,8 +57,7 @@ bool Socket::callListen(const int fileDescriptorPassive, const int backlog)
     return true;
 }
 
-bool Socket::callAccept(const int fileDescriptorPassive,
-                        int& fileDescriptor,
+bool Socket::callAccept(const int fileDescriptorPassive, int& fileDescriptor,
                         std::string& peerSocketAddress)
 {
     struct sockaddr_in addr
@@ -80,7 +79,9 @@ bool Socket::callAccept(const int fileDescriptorPassive,
     return true;
 }
 
-bool Socket::callConnect(const int fileDescriptor, const std::string& endpointAddress, const int endpointPort)
+bool Socket::callConnect(const int fileDescriptor,
+                         const std::string& endpointAddress,
+                         const int endpointPort)
 {
     struct sockaddr_in addr
     {
@@ -95,8 +96,7 @@ bool Socket::callConnect(const int fileDescriptor, const std::string& endpointAd
         return false;
     }
 
-    if (connect(fileDescriptor, (struct sockaddr*)&addr,
-                sizeof(addr)) < 0)
+    if (connect(fileDescriptor, (struct sockaddr*)&addr, sizeof(addr)) < 0)
     {
         std::cerr << "connect() returned an error: " << errno << std::endl;
         close(fileDescriptor);

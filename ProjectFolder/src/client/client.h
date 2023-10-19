@@ -6,7 +6,8 @@
 class Client
 {
    public:
-    Client(const Protocol _protocol, const std::string& _address, const int _port);
+    Client(const Protocol _protocol, const std::string& _address,
+           const int _port);
     bool start();
 
    private:
