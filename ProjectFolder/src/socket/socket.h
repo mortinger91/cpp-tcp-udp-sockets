@@ -21,9 +21,9 @@ namespace Socket
     // it is calling listen() and waiting for an active peer socket
     // to call connect() and establish a new connection
     //
-    // the backlog parameters represent the maximum number of pending
+    // the backlog argument represents the maximum number of pending
     // unaccepted connection that can be held in the OS internal queue
-    bool callListen(const int fileDescriptor, const int backlog = 5);
+    bool callListen(const int fileDescriptorPassive, const int backlog = 5);
 
     // Accept an incoming connection.
     // accept() creates a new socket that will be connected
@@ -34,8 +34,14 @@ namespace Socket
     // listen() and accept() the OS will mark it as a pending
     // connection and the client connect() will block until
     // the server calls accept()
-    bool callAccept(const int fileDescriptorPassive, int& fileDescriptorActive,
+    bool callAccept(const int fileDescriptorPassive, int& fileDescriptor,
                     std::string& peerSocketAddress);
+
+    // The socket that calls connect() is called an active socket (the client),
+    // since it is actively performing the connect() to the peer socket.
+    // The peer socket is called passive (the server), 
+    // since it calls listen() and wait for the peer socket to call connect()
+    bool callConnect(const int fileDescriptor, const std::string& endpointAddress, const int endpointPort);
 
     bool sendMessage(const int fileDescriptor, const std::string& message);
 

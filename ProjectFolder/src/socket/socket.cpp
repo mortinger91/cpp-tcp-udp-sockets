@@ -46,37 +46,62 @@ bool Socket::callBind(const int fileDescriptor, std::optional<const int> port,
     return true;
 }
 
-bool Socket::callListen(const int fileDescriptor, const int backlog)
+bool Socket::callListen(const int fileDescriptorPassive, const int backlog)
 {
-    if (listen(fileDescriptor, backlog) < 0)
+    if (listen(fileDescriptorPassive, backlog) < 0)
     {
         std::cerr << "listen() returned an error: " << errno << std::endl;
-        close(fileDescriptor);
+        close(fileDescriptorPassive);
         return false;
     }
     return true;
 }
 
 bool Socket::callAccept(const int fileDescriptorPassive,
-                        int& fileDescriptorActive,
+                        int& fileDescriptor,
                         std::string& peerSocketAddress)
 {
     struct sockaddr_in addr
     {
     };
     socklen_t addr_size = sizeof(addr);
-    fileDescriptorActive =
+    fileDescriptor =
         accept(fileDescriptorPassive, (struct sockaddr*)&addr, &addr_size);
-    if (fileDescriptorActive < 0)
+    if (fileDescriptor < 0)
     {
         std::cerr << "accept() returned an error: " << errno << std::endl;
         close(fileDescriptorPassive);
-        close(fileDescriptorActive);
+        close(fileDescriptor);
         return false;
     }
-    char client_ip[INET_ADDRSTRLEN];
-    inet_ntop(AF_INET, &(addr.sin_addr), client_ip, INET_ADDRSTRLEN);
-    peerSocketAddress = std::string(client_ip);
+    char peerSocketAddressC[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(addr.sin_addr), peerSocketAddressC, INET_ADDRSTRLEN);
+    peerSocketAddress = std::string(peerSocketAddressC);
+    return true;
+}
+
+bool Socket::callConnect(const int fileDescriptor, const std::string& endpointAddress, const int endpointPort)
+{
+    struct sockaddr_in addr
+    {
+    };
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(endpointPort);
+    // Convert the server address from string to binary form
+    if (inet_pton(AF_INET, endpointAddress.c_str(), &(addr.sin_addr)) <= 0)
+    {
+        std::cerr << "Invalid server address!" << std::endl;
+        close(fileDescriptor);
+        return false;
+    }
+
+    if (connect(fileDescriptor, (struct sockaddr*)&addr,
+                sizeof(addr)) < 0)
+    {
+        std::cerr << "Failed to connect to the server: " << errno << std::endl;
+        close(fileDescriptor);
+        return false;
+    }
     return true;
 }
 
