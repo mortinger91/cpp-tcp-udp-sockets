@@ -6,7 +6,7 @@
             "type": "lldb",
             "request": "launch",
             "program": "${workspaceFolder}/build/Debug/bin/cpp-tcp-udp-sockets",
-            "args": ["server"],
+            "args": ["server", "9000"],
             "preLaunchTask": "build_debug",
             "cwd": "${workspaceFolder}",
         },

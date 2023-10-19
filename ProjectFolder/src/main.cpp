@@ -7,14 +7,17 @@ int main(int argc, char* argv[])
 {
     if (argc >= 2)
     {
-        if (strcmp(argv[1], "server") == 0)
+        if ((strcmp(argv[1], "server") == 0) && argc == 3)
         {
-            Server s(9000, Protocol::TCP);
-            s.start();
+            Server s(Protocol::TCP, std::stoi(argv[2]));
+            if (!s.start())
+            {
+                return 4;
+            }
         }
-        else if (strcmp(argv[1], "client") == 0)
+        else if (strcmp(argv[1], "client") == 0 && argc == 4)
         {
-            Client c("127.0.0.1", 9000, Protocol::TCP);
+            Client c(std::string(argv[2]), std::stoi(argv[3]), Protocol::TCP);
             if (!c.start())
             {
                 return 3;

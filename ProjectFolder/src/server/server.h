@@ -5,15 +5,12 @@
 class Server
 {
    public:
-    Server(int _port, Protocol _protocol);
-    void start();
+    Server(const Protocol _protocol, const int _port);
+    bool start();
 
    private:
     Protocol m_Protocol;
     int m_Port;
-    int m_Listen_fd;
-    int m_Server_fd;
-
-    void createSocket(int port, Protocol protocol);
-    void createTCPSocket(int port);
+    int m_Passive_fd;
+    int m_Connection_fd;
 };
