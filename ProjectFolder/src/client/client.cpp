@@ -21,6 +21,10 @@ bool Client::start()
 
     if (!Socket::create(m_Protocol, m_Active_fd)) return false;
 
+    // It is possible to callBind() here specifying a network interface address.
+    // This will force the socket to use that interface, ignoring the default
+    // system routing
+
     if (!Socket::callConnect(m_Active_fd, m_Address, m_Port)) return false;
 
     std::string initialMessage = "Hello, server!\n";
