@@ -98,7 +98,7 @@ bool Socket::callConnect(const int fileDescriptor, const std::string& endpointAd
     if (connect(fileDescriptor, (struct sockaddr*)&addr,
                 sizeof(addr)) < 0)
     {
-        std::cerr << "Failed to connect to the server: " << errno << std::endl;
+        std::cerr << "connect() returned an error: " << errno << std::endl;
         close(fileDescriptor);
         return false;
     }
@@ -148,6 +148,10 @@ bool Socket::readMessage(const int fileDescriptor, std::string& message,
         return false;
     }
     message = std::string(buffer);
+    // This is needed otherwise the string will contain some garbage
+    // from previous messages and won't automatically resize to the
+    // first /n character.
+    message.resize(received);
     return true;
 }
 

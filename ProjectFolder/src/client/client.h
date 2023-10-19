@@ -6,16 +6,12 @@
 class Client
 {
    public:
-    Client(std::string _address, int _port, Protocol _protocol);
+    Client(const Protocol _protocol, const std::string& _address, const int _port);
     bool start();
 
    private:
     Protocol m_Protocol;
     std::string m_Address;
     int m_Port;
-    int m_Client_fd;
-
-    bool createSocketAndConnect(std::string address, int port,
-                                Protocol protocol);
-    bool createTCPSocketAndConnect(std::string address, int port);
+    int m_Active_fd;
 };

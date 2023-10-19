@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
         }
         else if (strcmp(argv[1], "client") == 0 && argc == 4)
         {
-            Client c(std::string(argv[2]), std::stoi(argv[3]), Protocol::TCP);
+            Client c(Protocol::TCP, std::string(argv[2]), std::stoi(argv[3]));
             if (!c.start())
             {
                 return 3;
