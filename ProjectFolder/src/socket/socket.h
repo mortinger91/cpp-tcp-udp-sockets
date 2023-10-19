@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <string>
 
 enum Protocol
 {
@@ -8,7 +9,7 @@ enum Protocol
     UDP
 };
 
-class Socket
+namespace Socket
 {
     bool create(const Protocol protocol, int& fileDescriptor);
 
@@ -41,4 +42,6 @@ class Socket
     // recv() is a blocking call
     bool readMessage(const int fileDescriptor, std::string& message,
                      const int bufferSize = 1024);
-};
+
+    void callClose(const int fileDescriptor);
+}  // namespace Socket

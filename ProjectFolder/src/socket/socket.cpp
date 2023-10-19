@@ -125,3 +125,8 @@ bool Socket::readMessage(const int fileDescriptor, std::string& message,
     message = std::string(buffer);
     return true;
 }
+
+void Socket::callClose(const int fileDescriptor)
+{
+    close(fileDescriptor);
+}
