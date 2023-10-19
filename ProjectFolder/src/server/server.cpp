@@ -14,6 +14,8 @@ bool Server::start()
 
     if (!Socket::create(m_Protocol, m_Passive_fd)) return false;
 
+    if (!Socket::callBind(m_Passive_fd, m_Port, std::nullopt)) return false;
+
     std::cout << "Listening for a new connection request on port: " << m_Port
               << std::endl;
     if (!Socket::callListen(m_Passive_fd)) return false;
