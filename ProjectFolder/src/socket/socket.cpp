@@ -40,6 +40,7 @@ bool Socket::callBind(const int fileDescriptor, std::optional<const int> port,
     if (bind(fileDescriptor, (struct sockaddr*)&addr, sizeof(addr)) < 0)
     {
         std::cerr << "bind() returned an error: " << errno << std::endl;
+        perror("bind");
         close(fileDescriptor);
         return false;
     }
@@ -51,6 +52,7 @@ bool Socket::callListen(const int fileDescriptorPassive, const int backlog)
     if (listen(fileDescriptorPassive, backlog) < 0)
     {
         std::cerr << "listen() returned an error: " << errno << std::endl;
+        perror("listen");
         close(fileDescriptorPassive);
         return false;
     }
@@ -69,6 +71,7 @@ bool Socket::callAccept(const int fileDescriptorPassive, int& fileDescriptor,
     if (fileDescriptor < 0)
     {
         std::cerr << "accept() returned an error: " << errno << std::endl;
+        perror("accept");
         close(fileDescriptorPassive);
         close(fileDescriptor);
         return false;
@@ -99,6 +102,7 @@ bool Socket::callConnect(const int fileDescriptor,
     if (connect(fileDescriptor, (struct sockaddr*)&addr, sizeof(addr)) < 0)
     {
         std::cerr << "connect() returned an error: " << errno << std::endl;
+        perror("connect");
         close(fileDescriptor);
         return false;
     }
@@ -111,6 +115,7 @@ bool Socket::sendMessage(const int fileDescriptor, const std::string& message)
     if (sent < 0)
     {
         std::cerr << "An error occurred during send(): " << errno << std::endl;
+        perror("send");
         return false;
     }
     else if (sent == 0)
@@ -137,6 +142,7 @@ bool Socket::readMessage(const int fileDescriptor, std::string& message,
     if (received < 0)
     {
         std::cerr << "An error occurred during recv(): " << errno << std::endl;
+        perror("recv");
         return false;
     }
     else if (received == 0)
