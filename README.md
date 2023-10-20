@@ -6,9 +6,10 @@
 
 - Run as server:  
 Listen on a port for incoming TCP connections.  
-Prints everything it receives through the connection as hex in the stdout.  
+Prints everything it receives through the connection in the stdout.
 - Run as client:  
-Connect to an endpoint and port.
+Connect to an endpoint and port.  
+Prints everything it receives through the connection in the stdout.
 
 Requirements:
 --------------
