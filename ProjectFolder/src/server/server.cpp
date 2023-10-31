@@ -16,31 +16,39 @@ bool Server::start()
 
     if (!Socket::callBind(m_Passive_fd, m_Port, std::nullopt)) return false;
 
-    std::cout << "Listening for a new connection request on port: " << m_Port
-              << std::endl;
-    if (!Socket::callListen(m_Passive_fd)) return false;
+    if (m_Protocol == Protocol::TCP)
+    {
+        std::cout << "Listening for a new TCP connection request on port: " << m_Port
+                << std::endl;
+        if (!Socket::callListen(m_Passive_fd)) return false;
 
-    std::string peerAddress;
-    if (!Socket::callAccept(m_Passive_fd, m_Connection_fd, peerAddress))
-        return false;
-    std::cout << "Accepted a new connection from IP address: " << peerAddress
-              << std::endl;
+        std::string peerAddress;
+        if (!Socket::callAccept(m_Passive_fd, m_Connection_fd, peerAddress))
+            return false;
+        std::cout << "Accepted a new connection from IP address: " << peerAddress
+                << std::endl;
 
-    std::string initialMessage = "Hello, client " + peerAddress + "!\n";
-    if (!Socket::sendMessage(m_Connection_fd, initialMessage)) return false;
-    std::cout << "Sent message: " << initialMessage;
+        std::string initialMessage = "Hello, client " + peerAddress + "!\n";
+        if (!Socket::sendMessage(m_Connection_fd, initialMessage)) return false;
+        std::cout << "Sent message: " << initialMessage;
+    }
+    else
+    {
+        std::cout << "Listening for UDP traffic on port: " << m_Port
+                << std::endl;
+    }
 
-    bool returnValue = true;
+    bool returnValue;
     std::string receivedMessage;
     while (true)
     {
-        // std::string input;
-        // std::getline(std::cin, input);
-        // if (input == "exit") break;
+        if (m_Protocol == Protocol::TCP)
+            returnValue = Socket::readMessage(m_Connection_fd, receivedMessage);
+        else
+            returnValue = Socket::readMessage(m_Passive_fd, receivedMessage);
 
-        if (!Socket::readMessage(m_Connection_fd, receivedMessage))
+        if (!returnValue)
         {
-            returnValue = false;
             break;
         }
         std::cout << "Received message: " << receivedMessage;
@@ -49,7 +57,8 @@ bool Server::start()
                   << std::endl;
     }
 
+    if (m_Protocol == Protocol::TCP)
+        Socket::callClose(m_Connection_fd);
     Socket::callClose(m_Passive_fd);
-    Socket::callClose(m_Connection_fd);
     return returnValue;
 }
