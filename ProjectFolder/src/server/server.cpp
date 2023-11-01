@@ -16,17 +16,19 @@ bool Server::start()
 
     if (!Socket::callBind(m_Passive_fd, m_Port, std::nullopt)) return false;
 
+    // listen() and accept() are required only for a TCP(SOCK_STREAM) socket.
+    // A UDP socket is connection-less so data can be read after calling bind()
     if (m_Protocol == Protocol::TCP)
     {
-        std::cout << "Listening for a new TCP connection request on port: " << m_Port
-                << std::endl;
+        std::cout << "Listening for a new TCP connection request on port: "
+                  << m_Port << std::endl;
         if (!Socket::callListen(m_Passive_fd)) return false;
 
         std::string peerAddress;
         if (!Socket::callAccept(m_Passive_fd, m_Connection_fd, peerAddress))
             return false;
-        std::cout << "Accepted a new connection from IP address: " << peerAddress
-                << std::endl;
+        std::cout << "Accepted a new connection from IP address: "
+                  << peerAddress << std::endl;
 
         std::string initialMessage = "Hello, client " + peerAddress + "!\n";
         if (!Socket::sendMessage(m_Connection_fd, initialMessage)) return false;
@@ -35,7 +37,7 @@ bool Server::start()
     else
     {
         std::cout << "Listening for UDP traffic on port: " << m_Port
-                << std::endl;
+                  << std::endl;
     }
 
     bool returnValue;
@@ -57,8 +59,7 @@ bool Server::start()
                   << std::endl;
     }
 
-    if (m_Protocol == Protocol::TCP)
-        Socket::callClose(m_Connection_fd);
+    if (m_Protocol == Protocol::TCP) Socket::callClose(m_Connection_fd);
     Socket::callClose(m_Passive_fd);
     return returnValue;
 }
