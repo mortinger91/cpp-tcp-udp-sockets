@@ -49,10 +49,7 @@ bool Server::start()
         else
             returnValue = Socket::readMessage(m_Passive_fd, receivedMessage);
 
-        if (!returnValue)
-        {
-            break;
-        }
+        if (!returnValue) break;
         std::cout << "Received message: " << receivedMessage;
         std::cout << "Message in hex: "
                   << Utility::rawBytesToHexString(receivedMessage) << std::endl
