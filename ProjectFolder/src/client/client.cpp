@@ -21,10 +21,32 @@ bool Client::start()
 
     if (!Socket::create(m_Protocol, m_Active_fd)) return false;
 
-    // It is possible to callBind() here specifying a network interface address.
-    // This will force the socket to use that interface, ignoring the default
-    // system routing
+    // TCP AND UDP:
+    // It is possible to call bind() here specifying a network
+    // interface IP address.
+    // This will force the socket to use that interface.
+    // Otherwise, the OS will decide which interface to use based
+    // on routing tables
+    //
+    // if (!Socket::callBind(m_Active_fd, std::nullopt, "192.168.1.123"))
+    //    return false;
 
+    // UDP:
+    // If the socket type is UDP(SOCK_DGRAM), it is not mandatory to call
+    // connect() as for TCP. If called, it causes the kernel to record the
+    // address as the socket peer, making it a "connected datagram socket".
+    // This enables the use of send() and recv().
+    // Only datagrams sent by the peer socket may be read on this socket.
+    // This is valid only on the socket on which connect() has been called,
+    // so the peer socket might not have called connect().
+    //
+    // An "unconnected datagram socket" can receive datagrams from multiple
+    // addresses.
+    // recvfrom() must be used instead of recv() to read.
+    // sendto() must be used instead of send() to write.
+    //
+    // connect() can be called again to change the address of the peer socket
+    //
     if (!Socket::callConnect(m_Active_fd, m_Address, m_Port)) return false;
 
     std::string initialMessage = "Hello, server!\n";
@@ -35,10 +57,6 @@ bool Client::start()
     std::string receivedMessage;
     while (true)
     {
-        // std::string input;
-        // std::getline(std::cin, input);
-        // if (input == "exit") break;
-
         if (!Socket::readMessage(m_Active_fd, receivedMessage))
         {
             returnValue = false;

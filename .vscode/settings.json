@@ -2,6 +2,7 @@
     "cmake.sourceDirectory": "${workspaceFolder}/ProjectFolder",
     "files.associations": {
         "*.php": "php",
+        "*.cpp": "cpp",
         "array": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
@@ -48,6 +49,13 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "cstring": "cpp",
+        "optional": "cpp",
+        "ratio": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp",
+        "cinttypes": "cpp"
     }
 }
