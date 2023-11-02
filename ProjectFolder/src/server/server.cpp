@@ -16,8 +16,18 @@ bool Server::start()
 
     if (!Socket::callBind(m_Passive_fd, m_Port, std::nullopt)) return false;
 
-    // listen() and accept() are required only for a TCP(SOCK_STREAM) socket.
-    // A UDP socket is connection-less so data can be read after calling bind()
+    // TCP:
+    //   listen() and accept() are used only in TCP(SOCK_STREAM) sockets.
+    //   Two file descriptors are needed, the passive one will be used to
+    //   listen() and accept() new connections.
+    //   Every time a new connection is accepted, a new file descriptor
+    //   representing that connection will be created.
+    //   It is possible to iterate over accept() creating new
+    //   connections over the same passive file descriptor
+    //
+    // UDP:
+    //   A UDP socket is connection-less so data can be read from it after
+    //   calling bind()
     if (m_Protocol == Protocol::TCP)
     {
         std::cout << "Listening for a new TCP connection request on port: "
