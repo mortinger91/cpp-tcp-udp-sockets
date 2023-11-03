@@ -110,7 +110,7 @@ bool Socket::callConnect(const int fileDescriptorConnection,
     return true;
 }
 
-bool Socket::sendMessage(const int fileDescriptor, const std::string& message)
+bool Socket::callSend(const int fileDescriptor, const std::string& message)
 {
     ssize_t sent = send(fileDescriptor, message.c_str(), message.length(), 0);
     if (sent < 0)
@@ -130,6 +130,41 @@ bool Socket::sendMessage(const int fileDescriptor, const std::string& message)
     else if (sent < message.length())
     {
         std::cout << "send(): Not all data has been sent" << std::endl;
+    }
+    return true;
+}
+
+bool Socket::callSendto(const int fileDescriptor,
+                        const std::string& destinationAddress,
+                        const int destinationPort, const std::string& message)
+{
+    struct sockaddr_in addr
+    {
+    };
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(destinationPort);
+    addr.sin_addr.s_addr = inet_addr(destinationAddress.c_str());
+    ssize_t sent = sendto(fileDescriptor, message.c_str(), message.length(), 0,
+                          (struct sockaddr*)&addr, sizeof(addr));
+    if (sent < 0)
+    {
+        std::cerr << "An error occurred during sendto(): " << errno
+                  << std::endl;
+        perror("sendto");
+        return false;
+    }
+    else if (sent == 0)
+    {
+        std::cout
+            << "sendto(): The connection has been closed gracefully by the "
+               "peer, closing the socket!"
+            << std::endl;
+        close(fileDescriptor);
+        return false;
+    }
+    else if (sent < message.length())
+    {
+        std::cout << "sendto(): Not all data has been sent" << std::endl;
     }
     return true;
 }
@@ -163,7 +198,8 @@ bool Socket::callRecv(const int fileDescriptor, std::string& message,
 }
 
 bool Socket::callRecvfrom(const int fileDescriptor, std::string& sourceAddress,
-                          std::string& message, const int bufferSize)
+                          int& sourcePort, std::string& message,
+                          const int bufferSize)
 {
     struct sockaddr_in addr
     {
@@ -177,7 +213,7 @@ bool Socket::callRecvfrom(const int fileDescriptor, std::string& sourceAddress,
     {
         std::cerr << "An error occurred during recvfrom(): " << errno
                   << std::endl;
-        perror("recv");
+        perror("recvfrom");
         return false;
     }
     else if (received == 0)
@@ -192,6 +228,7 @@ bool Socket::callRecvfrom(const int fileDescriptor, std::string& sourceAddress,
     char sourceAddressC[INET_ADDRSTRLEN];
     inet_ntop(AF_INET, &(addr.sin_addr), sourceAddressC, INET_ADDRSTRLEN);
     sourceAddress = std::string(sourceAddressC);
+    sourcePort = ntohs(addr.sin_port);
     message = std::string(buffer);
     // This is needed otherwise the string will contain some garbage
     // from previous messages and won't automatically resize to the

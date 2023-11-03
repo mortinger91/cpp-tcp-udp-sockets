@@ -50,7 +50,7 @@ bool Client::start()
     if (!Socket::callConnect(m_Active_fd, m_Address, m_Port)) return false;
 
     std::string initialMessage = "Hello, server!\n";
-    if (!Socket::sendMessage(m_Active_fd, initialMessage)) return false;
+    if (!Socket::callSend(m_Active_fd, initialMessage)) return false;
     std::cout << "Sent message: " << initialMessage;
 
     bool returnValue = true;

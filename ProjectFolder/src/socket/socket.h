@@ -45,14 +45,19 @@ namespace Socket
                      const std::string& endpointAddress,
                      const int endpointPort);
 
-    bool sendMessage(const int fileDescriptor, const std::string& message);
+    bool callSend(const int fileDescriptor, const std::string& message);
 
-    // recv() is a blocking call
+    bool callSendto(const int fileDescriptor,
+                    const std::string& destinationAddress,
+                    const int destinationPort, const std::string& message);
+
+    // recv() and recvfrom() are blocking calls
     bool callRecv(const int fileDescriptor, std::string& message,
                   const int bufferSize = 1024);
 
     bool callRecvfrom(const int fileDescriptor, std::string& sourceAddress,
-                      std::string& message, const int bufferSize = 1024);
+                      int& sourcePort, std::string& message,
+                      const int bufferSize = 1024);
 
     void callClose(const int fileDescriptor);
 }  // namespace Socket

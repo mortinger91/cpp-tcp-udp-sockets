@@ -30,6 +30,7 @@ bool Server::start()
     //   calling bind().
     //   Multiple endpoints can send data to this UDP socket
     std::string peerAddress;
+    int peerPort;
     if (m_Protocol == Protocol::TCP)
     {
         std::cout << "Listening for a new TCP connection request on port: "
@@ -42,12 +43,13 @@ bool Server::start()
                   << peerAddress << std::endl;
 
         std::string initialMessage = "Hello, client " + peerAddress + "!\n";
-        if (!Socket::sendMessage(m_Connection_fd, initialMessage)) return false;
+        if (!Socket::callSend(m_Connection_fd, initialMessage)) return false;
         std::cout << "Sent message: " << initialMessage;
     }
     else
     {
         std::cout << "Listening for UDP traffic on port: " << m_Port
+                  << std::endl
                   << std::endl;
     }
 
@@ -58,15 +60,23 @@ bool Server::start()
         if (m_Protocol == Protocol::TCP)
             returnValue = Socket::callRecv(m_Connection_fd, receivedMessage);
         else
-            returnValue =
-                Socket::callRecvfrom(m_Bound_fd, peerAddress, receivedMessage);
-
+            returnValue = Socket::callRecvfrom(m_Bound_fd, peerAddress,
+                                               peerPort, receivedMessage);
         if (!returnValue) break;
+
         std::cout << "Received message: " << receivedMessage
-                  << " from address: " << peerAddress;
+                  << "From address: " << peerAddress << std::endl;
         std::cout << "Message in hex: "
-                  << Utility::rawBytesToHexString(receivedMessage) << std::endl
-                  << std::endl;
+                  << Utility::rawBytesToHexString(receivedMessage) << std::endl;
+
+        if (m_Protocol == Protocol::TCP)
+            returnValue =
+                Socket::callSend(m_Connection_fd, "echo: " + receivedMessage);
+        else
+            returnValue = Socket::callSendto(m_Bound_fd, peerAddress, peerPort,
+                                             "echo: " + receivedMessage);
+        if (!returnValue) break;
+        std::cout << "(Sent echo message back)" << std::endl << std::endl;
     }
 
     if (m_Protocol == Protocol::TCP) Socket::callClose(m_Connection_fd);
