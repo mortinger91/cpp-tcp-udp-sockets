@@ -12,9 +12,9 @@ bool Server::start()
 {
     std::cout << "Server started!" << std::endl;
 
-    if (!Socket::create(m_Protocol, m_Passive_fd)) return false;
+    if (!Socket::create(m_Protocol, m_Bound_fd)) return false;
 
-    if (!Socket::callBind(m_Passive_fd, m_Port, std::nullopt)) return false;
+    if (!Socket::callBind(m_Bound_fd, m_Port, std::nullopt)) return false;
 
     // TCP:
     //   listen() and accept() are used only in TCP(SOCK_STREAM) sockets.
@@ -27,15 +27,16 @@ bool Server::start()
     //
     // UDP:
     //   A UDP socket is connection-less so data can be read from it after
-    //   calling bind()
+    //   calling bind().
+    //   Multiple endpoints can send data to this UDP socket
+    std::string peerAddress;
     if (m_Protocol == Protocol::TCP)
     {
         std::cout << "Listening for a new TCP connection request on port: "
                   << m_Port << std::endl;
-        if (!Socket::callListen(m_Passive_fd)) return false;
+        if (!Socket::callListen(m_Bound_fd)) return false;
 
-        std::string peerAddress;
-        if (!Socket::callAccept(m_Passive_fd, m_Connection_fd, peerAddress))
+        if (!Socket::callAccept(m_Bound_fd, m_Connection_fd, peerAddress))
             return false;
         std::cout << "Accepted a new connection from IP address: "
                   << peerAddress << std::endl;
@@ -55,18 +56,20 @@ bool Server::start()
     while (true)
     {
         if (m_Protocol == Protocol::TCP)
-            returnValue = Socket::readMessage(m_Connection_fd, receivedMessage);
+            returnValue = Socket::callRecv(m_Connection_fd, receivedMessage);
         else
-            returnValue = Socket::readMessage(m_Passive_fd, receivedMessage);
+            returnValue =
+                Socket::callRecvfrom(m_Bound_fd, peerAddress, receivedMessage);
 
         if (!returnValue) break;
-        std::cout << "Received message: " << receivedMessage;
+        std::cout << "Received message: " << receivedMessage
+                  << " from address: " << peerAddress;
         std::cout << "Message in hex: "
                   << Utility::rawBytesToHexString(receivedMessage) << std::endl
                   << std::endl;
     }
 
     if (m_Protocol == Protocol::TCP) Socket::callClose(m_Connection_fd);
-    Socket::callClose(m_Passive_fd);
+    Socket::callClose(m_Bound_fd);
     return returnValue;
 }

@@ -35,21 +35,24 @@ namespace Socket
     // connection and the client connect() will block until
     // the server calls accept()
     bool callAccept(const int fileDescriptorPassive, int& fileDescriptor,
-                    std::string& peerSocketAddress);
+                    std::string& peerAddress);
 
     // The socket that calls connect() is called an active socket (the client),
     // since it is actively performing the connect() to the peer socket.
     // The peer socket is called passive (the server),
     // since it calls listen() and wait for the peer socket to call connect()
-    bool callConnect(const int fileDescriptor,
+    bool callConnect(const int fileDescriptorConnection,
                      const std::string& endpointAddress,
                      const int endpointPort);
 
     bool sendMessage(const int fileDescriptor, const std::string& message);
 
     // recv() is a blocking call
-    bool readMessage(const int fileDescriptor, std::string& message,
-                     const int bufferSize = 1024);
+    bool callRecv(const int fileDescriptor, std::string& message,
+                  const int bufferSize = 1024);
+
+    bool callRecvfrom(const int fileDescriptor, std::string& sourceAddress,
+                      std::string& message, const int bufferSize = 1024);
 
     void callClose(const int fileDescriptor);
 }  // namespace Socket

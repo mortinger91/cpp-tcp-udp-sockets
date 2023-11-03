@@ -60,7 +60,7 @@ bool Socket::callListen(const int fileDescriptorPassive, const int backlog)
 }
 
 bool Socket::callAccept(const int fileDescriptorPassive, int& fileDescriptor,
-                        std::string& peerSocketAddress)
+                        std::string& peerAddress)
 {
     struct sockaddr_in addr
     {
@@ -76,13 +76,13 @@ bool Socket::callAccept(const int fileDescriptorPassive, int& fileDescriptor,
         close(fileDescriptor);
         return false;
     }
-    char peerSocketAddressC[INET_ADDRSTRLEN];
-    inet_ntop(AF_INET, &(addr.sin_addr), peerSocketAddressC, INET_ADDRSTRLEN);
-    peerSocketAddress = std::string(peerSocketAddressC);
+    char peerAddressC[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(addr.sin_addr), peerAddressC, INET_ADDRSTRLEN);
+    peerAddress = std::string(peerAddressC);
     return true;
 }
 
-bool Socket::callConnect(const int fileDescriptor,
+bool Socket::callConnect(const int fileDescriptorConnection,
                          const std::string& endpointAddress,
                          const int endpointPort)
 {
@@ -95,15 +95,16 @@ bool Socket::callConnect(const int fileDescriptor,
     if (inet_pton(AF_INET, endpointAddress.c_str(), &(addr.sin_addr)) <= 0)
     {
         std::cerr << "Invalid server address!" << std::endl;
-        close(fileDescriptor);
+        close(fileDescriptorConnection);
         return false;
     }
 
-    if (connect(fileDescriptor, (struct sockaddr*)&addr, sizeof(addr)) < 0)
+    if (connect(fileDescriptorConnection, (struct sockaddr*)&addr,
+                sizeof(addr)) < 0)
     {
         std::cerr << "connect() returned an error: " << errno << std::endl;
         perror("connect");
-        close(fileDescriptor);
+        close(fileDescriptorConnection);
         return false;
     }
     return true;
@@ -133,8 +134,8 @@ bool Socket::sendMessage(const int fileDescriptor, const std::string& message)
     return true;
 }
 
-bool Socket::readMessage(const int fileDescriptor, std::string& message,
-                         const int bufferSize)
+bool Socket::callRecv(const int fileDescriptor, std::string& message,
+                      const int bufferSize)
 {
     char buffer[bufferSize];
     // 4th argument is flags. We currently set it to 0
@@ -153,6 +154,44 @@ bool Socket::readMessage(const int fileDescriptor, std::string& message,
         close(fileDescriptor);
         return false;
     }
+    message = std::string(buffer);
+    // This is needed otherwise the string will contain some garbage
+    // from previous messages and won't automatically resize to the
+    // first /n character.
+    message.resize(received);
+    return true;
+}
+
+bool Socket::callRecvfrom(const int fileDescriptor, std::string& sourceAddress,
+                          std::string& message, const int bufferSize)
+{
+    struct sockaddr_in addr
+    {
+    };
+    socklen_t addr_size = sizeof(addr);
+    char buffer[bufferSize];
+    // 4th argument is flags. We currently set it to 0
+    ssize_t received = recvfrom(fileDescriptor, buffer, bufferSize, 0,
+                                (struct sockaddr*)&addr, &addr_size);
+    if (received < 0)
+    {
+        std::cerr << "An error occurred during recvfrom(): " << errno
+                  << std::endl;
+        perror("recv");
+        return false;
+    }
+    else if (received == 0)
+    {
+        std::cout
+            << "recvfrom(): The connection has been closed gracefully by the "
+               "peer, closing the socket!"
+            << std::endl;
+        close(fileDescriptor);
+        return false;
+    }
+    char sourceAddressC[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(addr.sin_addr), sourceAddressC, INET_ADDRSTRLEN);
+    sourceAddress = std::string(sourceAddressC);
     message = std::string(buffer);
     // This is needed otherwise the string will contain some garbage
     // from previous messages and won't automatically resize to the

@@ -57,7 +57,7 @@ bool Client::start()
     std::string receivedMessage;
     while (true)
     {
-        returnValue = Socket::readMessage(m_Active_fd, receivedMessage);
+        returnValue = Socket::callRecv(m_Active_fd, receivedMessage);
         if (!returnValue) break;
         std::cout << "Received message: " << receivedMessage;
         std::cout << "Message in hex: "
