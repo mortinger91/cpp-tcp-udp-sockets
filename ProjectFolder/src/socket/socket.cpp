@@ -127,7 +127,7 @@ bool Socket::callSend(const int fileDescriptor, const std::string& message)
         close(fileDescriptor);
         return false;
     }
-    else if (sent < message.length())
+    else if (sent < ssize_t(message.length()))
     {
         std::cout << "send(): Not all data has been sent" << std::endl;
     }
@@ -162,7 +162,7 @@ bool Socket::callSendto(const int fileDescriptor,
         close(fileDescriptor);
         return false;
     }
-    else if (sent < message.length())
+    else if (sent < ssize_t(message.length()))
     {
         std::cout << "sendto(): Not all data has been sent" << std::endl;
     }

@@ -21,7 +21,7 @@ std::vector<char> Utility::rawBytesToHexVector(char* data, size_t size)
 {
     size_t hexVectorSize = size * 2 + 1;
     char hexStr[hexVectorSize];
-    int i;
+    size_t i;
     for (i = 0; i < size; i++)
     {
         sprintf(hexStr + i * 2, "%02x", data[i]);
