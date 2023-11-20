@@ -2,6 +2,7 @@
 
 #include <arpa/inet.h>
 #include <cerrno>
+#include <fcntl.h>
 #include <iostream>
 #include <netinet/in.h>
 #include <sys/socket.h>
@@ -179,6 +180,13 @@ bool Socket::callRecv(const int fileDescriptor, std::string& message,
     {
         std::cerr << "An error occurred during recv(): " << errno << std::endl;
         perror("recv");
+        if (errno == 11)  // Error code: EAGAIN
+        {
+            // If the file descriptor is nonblocking, recv() will return
+            // even if no data has been read from the buffer
+            message.resize(0);
+            return true;
+        }
         return false;
     }
     else if (received == 0)
@@ -240,4 +248,21 @@ bool Socket::callRecvfrom(const int fileDescriptor, std::string& sourceAddress,
 void Socket::callClose(const int fileDescriptor)
 {
     close(fileDescriptor);
+}
+
+bool Socket::setNonblocking(const int fileDescriptor)
+{
+    int flags = fcntl(fileDescriptor, F_GETFL, 0);
+    if (flags == -1)
+    {
+        std::cout << "Error getting file descriptor flags" << std::endl;
+        return false;
+    }
+    if (fcntl(fileDescriptor, F_SETFL, flags | O_NONBLOCK) == -1)
+    {
+        std::cout << "Error setting O_NONBLOCK file descriptor flag"
+                  << std::endl;
+        return false;
+    }
+    return true;
 }

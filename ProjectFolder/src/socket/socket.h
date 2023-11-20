@@ -60,4 +60,6 @@ namespace Socket
                       const int bufferSize = 1024);
 
     void callClose(const int fileDescriptor);
+
+    bool setNonblocking(const int fileDescriptor);
 }  // namespace Socket

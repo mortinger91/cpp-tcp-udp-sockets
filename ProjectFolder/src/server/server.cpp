@@ -53,6 +53,8 @@ bool Server::start()
                   << std::endl;
     }
 
+    // if (!Socket::setNonblocking(m_Bound_fd)) return false;
+
     bool returnValue;
     std::string receivedMessage;
     while (true)
