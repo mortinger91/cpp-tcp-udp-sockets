@@ -4,10 +4,19 @@
 
 ### Easy CMake C++ project that uses sockets. Supports Linux and macOS.   
 
-- Run as server:  
+- TCP server:  
 Listen on a port for incoming TCP connections.  
+Prints everything it receives through the connection in the stdout.  
+Sends the message it has received through the connection.
+- TCP client:  
+Connect to an endpoint and port.  
 Prints everything it receives through the connection in the stdout.
-- Run as client:  
+- UDP server:  
+Listen on a port for incoming UDP datagrams.  
+Multiple clients can send datagrams at its IP address and port.
+Prints everything it receives in the stdout.  
+Sends back to the specific client the message it has received.  
+- UDP client:  
 Connect to an endpoint and port.  
 Prints everything it receives through the connection in the stdout.
 
