@@ -13,7 +13,7 @@ Connect to an endpoint and port.
 Prints everything it receives through the connection in the stdout.
 - UDP server:  
 Listen on a port for incoming UDP datagrams.  
-Multiple clients can send datagrams at its IP address and port.
+Multiple clients can send datagrams at its IP address and port.  
 Prints everything it receives in the stdout.  
 Sends back to the specific client the message it has received.  
 - UDP client:  
